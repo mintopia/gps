@@ -1,7 +1,7 @@
-name: musicparty
+name: gpstracker
 
 services:
-  musicparty:
+  gpstracker:
     build:
       context: .
       dockerfile: docker/develop/Dockerfile
