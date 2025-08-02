@@ -1,0 +1,12 @@
+services:
+  musicparty:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.musicparty-musicparty.rule=Host(`musicparty`)"
+    networks:
+      - default
+      - frontend
+
+networks:
+  frontend:
+    external: true
