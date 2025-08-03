@@ -2,47 +2,78 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Traits\ToString;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use ToString;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
+    protected $casts = [
+        'terms_agreed_at' => 'datetime',
+        'last_login' => 'datetime',
+        'status_updated_at' => 'datetime',
+        'status' => 'object',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected ?string $email = null;
+    public function accounts(): HasMany
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(SocialAccount::class);
+    }
+
+    public function hasRole(string|Role $role): bool
+    {
+        if ($role instanceof Role) {
+            $role = $role->code;
+        }
+        return (bool)$this->roles()->whereCode($role)->count();
+    }
+
+    public function getEmail(): ?string
+    {
+        if ($this->email !== null) {
+            return $this->email;
+        }
+        $linked = $this->accounts()->whereNotNull('email')->first();
+        if ($linked) {
+            $this->email = $linked->email;
+            return $this->email;
+        }
+        return null;
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function avatarUrl(): string
+    {
+        foreach ($this->accounts as $acc) {
+            if ($acc->avatar_url) {
+                return $acc->avatar_url;
+            }
+        }
+        if ($email = $this->getEmail()) {
+            $toHash = $email;
+        } else {
+            $toHash = $this->nickname;
+        }
+        $hash = hash('sha256', $toHash);
+        return "https://gravatar.com/avatar/{$hash}?d=retro";
+    }
+
+    protected function toStringName(): string
+    {
+        return $this->nickname;
     }
 }
