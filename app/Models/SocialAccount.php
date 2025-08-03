@@ -3,13 +3,18 @@
 namespace App\Models;
 
 use App\Models\Traits\ToString;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
+/**
+ * @mixin IdeHelperSocialAccount
+ */
 class SocialAccount extends Model
 {
     use ToString;
+    use HasUlids;
 
     protected $hidden = [
         'access_token',

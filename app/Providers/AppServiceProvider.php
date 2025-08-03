@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Models\Theme;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pulse\Facades\Pulse;
@@ -24,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Date::use(CarbonImmutable::class);
+
         Blade::directive('setting', function (string $expression, $default = null) {
             return "<?php echo App\Models\Setting::fetch($expression, $default); ?>";
         });

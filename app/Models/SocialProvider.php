@@ -2,13 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Traits\ToString;
 use App\Services\Contracts\SocialProviderContract;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+/**
+ * @mixin IdeHelperSocialProvider
+ */
 class SocialProvider extends Model
 {
+    use HasUlids;
+    use ToString;
 
     public function accounts(): HasMany
     {

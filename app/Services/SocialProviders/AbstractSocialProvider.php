@@ -38,7 +38,7 @@ abstract class AbstractSocialProvider implements SocialProviderContract
             // Probably login
             $this->redirectUrl = route('login.return', $this->code);
         } else {
-            $this->redirectUrl = route('linkedaccounts.store', $this->code);
+            $this->redirectUrl = route('socialaccounts.store', $this->code);
         }
     }
 

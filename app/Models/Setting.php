@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\SettingValue;
 use App\Enums\SettingType;
 use App\Models\Traits\ToString;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -13,11 +14,14 @@ use Illuminate\Support\Facades\Log;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
+/**
+ * @mixin IdeHelperSetting
+ */
 class Setting extends Model implements Sortable
 {
-    use HasFactory;
     use SortableTrait;
     use ToString;
+    use HasUlids;
 
     protected static array $cached = [];
 

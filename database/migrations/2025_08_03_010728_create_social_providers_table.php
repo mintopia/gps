@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('social_providers', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
+            $table->string('name');
+            $table->string('code')->unique();
+            $table->string('provider_class');
+            $table->boolean('supports_auth')->default(false);
+            $table->boolean('enabled')->default(false);
+            $table->boolean('auth_enabled')->default(false);
+            $table->boolean('can_be_renamed')->default(false);
             $table->timestamps();
         });
     }

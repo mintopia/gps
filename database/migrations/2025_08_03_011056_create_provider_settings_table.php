@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('provider_settings', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
+            $table->ulidMorphs('provider');
+            $table->string('name');
+            $table->string('code');
+            $table->string('description')->nullable()->default(null);
+            $table->string('type');
+            $table->boolean('encrypted')->default(false);
+            $table->string('validation')->nullable()->default(null);
+            $table->longText('value')->nullable()->default(null);
+            $table->integer('order');
             $table->timestamps();
         });
     }

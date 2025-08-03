@@ -5,14 +5,19 @@ namespace App\Models;
 use App\Casts\SettingValue;
 use App\Enums\SettingType;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
+/**
+ * @mixin IdeHelperProviderSetting
+ */
 class ProviderSetting extends Model implements Sortable
 {
     use SortableTrait;
+    use HasUlids;
 
     protected $casts = [
         'value' => SettingValue::class,

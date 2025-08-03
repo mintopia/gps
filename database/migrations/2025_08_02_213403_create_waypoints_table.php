@@ -12,7 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('waypoints', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
+            $table->foreignUlid('track_id')->constrained()->cascadeOnDelete();;
+            $table->float('latitude');
+            $table->float('longitude');
+            $table->timestamp('date');
+            $table->float('speed');
+            $table->float('course');
+            $table->float('altitude');
+            $table->integer('satellites');
+            $table->float('hdop');
             $table->timestamps();
         });
     }

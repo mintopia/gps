@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tracks', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
+            $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();;
+            $table->longText('name')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }

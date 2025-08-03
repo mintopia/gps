@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Traits\ToString;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -10,7 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Theme extends Model
 {
-    use HasFactory;
+    use HasUlids;
+    use ToString;
 
     public function rgb(string $property): string
     {
